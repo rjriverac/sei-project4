@@ -1,6 +1,4 @@
-from os import name
 from django.db import models
-from stripe.api_resources import price
 
 # Create your models here.
 class Product(models.Model):
@@ -17,3 +15,5 @@ class Product(models.Model):
         ('PR', 'Produce'),
     ]
     food_category = models.CharField(max_length=2,choices=category_choices)
+    big_image = models.CharField(max_length=80)
+    small_image = models.CharField(max_length=80)
