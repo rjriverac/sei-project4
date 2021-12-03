@@ -9,3 +9,4 @@ class CartSerializer(serializers.ModelSerializer):
 
 class PopulatedCartSerializer(CartSerializer):
     order_items = ProductSerializer(many=True,read_only=True)
+

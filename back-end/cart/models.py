@@ -12,6 +12,6 @@ class Cart(models.Model):
 
     def get_total(self):
         total = 0
-        for each_item in self.order_items:
+        for each_item in self.order_items.all():
             total += each_item.price
         return total

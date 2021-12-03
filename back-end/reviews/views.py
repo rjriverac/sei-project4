@@ -1,3 +1,4 @@
+from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
@@ -16,19 +17,22 @@ class ReviewListView(APIView):
         return Response(serialized_prods.data, status = status.HTTP_200_OK)
     
     def post(self, request):
-        # self.permission_classes = (IsAuthenticatedOrReadOnly,)
-        review = ReviewSerializer(data = request.data)
-        print(review)
-        print(review.is_valid())
+        self.permission_classes = (IsAuthenticatedOrReadOnly,)
+        request_with_data = {**request.data, 'user': request.user.id}
+        review = ReviewSerializer(data = request_with_data)
+        # print(request.data)
+        # print(review.is_valid())
+        # print('*****',request.user.id)
         if review.is_valid():
-            print('*****',request.user)
-            review.save(user=request.user)
+            review.save()
             return Response(review.data, status = status.HTTP_201_CREATED)
         else:
             return Response(review.errors, status = status.HTTP_422_UNPROCESSABLE_ENTITY)
 
 class ReviewDetailView(APIView):
+
     permission_classes=(IsOwnerOrReadOnly,)
+
     def get(self,request,pk):
         try:
             review = Review.objects.get(id=pk)
@@ -40,6 +44,7 @@ class ReviewDetailView(APIView):
     def delete(self,request,pk):
         try:
             review = Review.objects.get(id=pk)
+            if review.user != request.user: raise ValidationError
             review.delete()
         except:
             return Response(status = status.HTTP_403_FORBIDDEN)
@@ -47,9 +52,9 @@ class ReviewDetailView(APIView):
         return Response(status = status.HTTP_204_NO_CONTENT)
 
     def put(self,request,pk):
-        print('****',request.user)
         try:
             review = Review.objects.get(id=pk)
+            if review.user != request.user: raise ValidationError()
             updated_rev = ReviewSerializer(review, data = request.data, partial = True)
             if updated_rev.is_valid():
                 updated_rev.save()

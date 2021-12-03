@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-from django.db.models.deletion import CASCADE
 from django.core.validators import MinValueValidator,MaxValueValidator
 
 User = get_user_model()
@@ -12,4 +11,4 @@ class Review(models.Model):
     user = models.ForeignKey(User,related_name='reviews',on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'{self.owner.username}\'s review of {self.product.name}'
+        return f'{self.user.username}\'s review of {self.product.name}'
