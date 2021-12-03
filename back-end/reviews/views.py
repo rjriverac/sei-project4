@@ -20,9 +20,6 @@ class ReviewListView(APIView):
         self.permission_classes = (IsAuthenticatedOrReadOnly,)
         request_with_data = {**request.data, 'user': request.user.id}
         review = ReviewSerializer(data = request_with_data)
-        # print(request.data)
-        # print(review.is_valid())
-        # print('*****',request.user.id)
         if review.is_valid():
             review.save()
             return Response(review.data, status = status.HTTP_201_CREATED)
