@@ -34,12 +34,27 @@ class CartDetailView(APIView):
     def get(self,request):
         try:
             cart = Cart.objects.get(user=request.user.id)
-            serialized_cart = PopulatedCartSerializer(cart)
-            total = cart.get_total()
-            cart_with_total = {**serialized_cart.data,'total':cart.get_total()}
-            return Response(cart_with_total,status=status.HTTP_200_OK)
-        except:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+        except Cart.DoesNotExist:
+            raise NotFound()
 
-    # def put(self,request):
+        serialized_cart = PopulatedCartSerializer(cart)
+        total = cart.get_total()
+        cart_with_total = {**serialized_cart.data,'total':cart.get_total()}
+        return Response(cart_with_total,status=status.HTTP_200_OK)
+
+
+    def put(self,request):
+        try:
+            cart = Cart.objects.get(user=request.user.id)
+        except Cart.DoesNotExist:
+            raise NotFound()
+        print(request.data)
+        updated_cart = PopulatedCartSerializer(cart, data = request.data, partial=True)
+        try:
+            if updated_cart.is_valid():
+                print(updated_cart.data)
+                updated_cart.save()
+                return Response(updated_cart.data,status = status.HTTP_200_OK)
+        except:
+            return Response({'message':'something went wrong'},status=status.HTTP_304_NOT_MODIFIED)
 
