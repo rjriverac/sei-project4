@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta, timezone
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -32,5 +33,6 @@ class LoginView(APIView):
         if not user.check_password(password):
             raise PermissionDenied({'message': 'Invalid credentials'})
 
-        token = jwt.encode({'sub':user.id},config('SECRET_KEY'),algorithm='HS256')
+        date = datetime.now(tz=timezone.utc) + timedelta(days=4)
+        token = jwt.encode({'sub':user.id,'exp':date},config('SECRET_KEY'),algorithm='HS256')
         return Response({ 'token': token, 'message': f'Welcome back {user.username}'})
