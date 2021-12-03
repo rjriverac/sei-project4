@@ -1,0 +1,24 @@
+[
+{
+  "model": "products.product",
+  "pk": 1,
+  "fields": {
+    "name": "Lettuce",
+    "price": "10.00",
+    "food_category": "PR",
+    "big_image": "test",
+    "small_image": "test"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 2,
+  "fields": {
+    "name": "meat",
+    "price": "25.00",
+    "food_category": "ME",
+    "big_image": "ttest",
+    "small_image": "test"
+  }
+}
+]

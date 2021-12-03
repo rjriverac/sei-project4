@@ -1,0 +1,31 @@
+[
+{
+  "model": "cart.cart",
+  "pk": 1,
+  "fields": {
+    "user": 1,
+    "order_items": [
+      1,
+      2
+    ]
+  }
+},
+{
+  "model": "cart.cart",
+  "pk": 2,
+  "fields": {
+    "user": 2,
+    "order_items": [
+      1
+    ]
+  }
+},
+{
+  "model": "cart.cart",
+  "pk": 3,
+  "fields": {
+    "user": 3,
+    "order_items": []
+  }
+}
+]

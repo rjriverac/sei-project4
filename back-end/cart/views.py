@@ -1,5 +1,5 @@
 from rest_framework import status
-from rest_framework.exceptions import NotFound
+from rest_framework.exceptions import NotFound, ValidationError
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
@@ -20,13 +20,12 @@ class CartListView(APIView):
         try:
             cart = Cart.objects.get(user=request.user.id)
         except Cart.DoesNotExist:
-            raise NotFound()
-        newcart = CartSerializer(data={'user': request.user.id })
-        if newcart.is_valid():
-            newcart.save()
-            return Response(data={'message':'Cart successfully created'})
-            # return Response(data={'message': 'cart already exists'},status=status.HTTP_400_BAD_REQUEST)
-        # else:
+            newcart = CartSerializer(data={'user': request.user.id })
+            if newcart.is_valid():
+                newcart.save()
+                return Response(data={'message':'Cart successfully created'})
+        else:
+            return Response(data={'message': 'cart already exists'},status=status.HTTP_400_BAD_REQUEST)
 
 
 class CartDetailView(APIView):
