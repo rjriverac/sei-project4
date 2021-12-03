@@ -8,4 +8,10 @@ class Cart(models.Model):
     order_items = models.ManyToManyField("products.Product")
 
     def __str__(self):
-        return f'{self.user.username} has {self.order_items} in their cart' 
+        return f'{self.user.username}\'s Cart'
+
+    def get_total(self):
+        total = 0
+        for each_item in self.order_items:
+            total += each_item.price
+        return total

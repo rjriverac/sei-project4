@@ -18,7 +18,7 @@ class ProductListView(APIView):
         return Response(serialized_prods.data, status = status.HTTP_200_OK)
     
     def post(self, request):
-        self.permission_classes = IsAdminUser
+        self.permission_classes = (IsAdminUser,)
         product = ProductSerializer(data = request.data)
         if product.is_valid():
             product.save()
@@ -28,11 +28,11 @@ class ProductListView(APIView):
 
 class ProductDetailView(APIView):
     def get(self,request,pk):
-        self.permission_classes = (IsAuthenticatedOrReadOnly)
         try:
+            self.permission_classes = (IsAuthenticatedOrReadOnly,)
             product = Product.objects.get(id=pk)
             serialized_prod = ProductSerializer(product)
-            return Response(serialized_prod, status = status.HTTP_202_ACCEPTED)
+            return Response(serialized_prod.data, status = status.HTTP_202_ACCEPTED)
         except:
             return Response(status.HTTP_404_NOT_FOUND)
 
