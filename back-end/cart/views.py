@@ -29,7 +29,7 @@ class CartListView(APIView):
 
 
 class CartDetailView(APIView):
-    permission_classes = (IsOwnerOrReadOnly,)
+    permission_classes = (IsOwnerOrReadOnly,IsAuthenticated)
     def get(self,request):
         try:
             cart = Cart.objects.get(user=request.user.id)
@@ -45,8 +45,9 @@ class CartDetailView(APIView):
         try:
             cart = Cart.objects.get(user=request.user.id)
         except Cart.DoesNotExist:
-            raise NotFound()
-        print(request.data)
+            newcart = CartSerializer(data={'user': request.user.id })
+            if newcart.is_valid():
+                newcart.save()
         if request.data.get('operation') == 'add':
             try:
                 current_cart = list(cart.order_items.all())
