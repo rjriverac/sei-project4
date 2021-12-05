@@ -3,12 +3,14 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 import stripe
 from decouple import config
-
+from cart.models import Cart
 # Create your views here.
 stripe.api_key = config('stripe.api_key')
 
 @api_view(['POST'])
 def test_payment(request):
+    # user_cart = Cart.objects.get(user=request.user)
+    # print(user_cart.get_total())
     test_payment_intent = stripe.PaymentIntent.create(
     amount=1000, currency='pln', 
     payment_method_types=['card'],
