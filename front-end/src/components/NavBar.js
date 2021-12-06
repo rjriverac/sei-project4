@@ -40,7 +40,7 @@ const NavBar = () => {
             >myCart Navigation</Offcanvas.Title>
           </Offcanvas.Header>
           <Offcanvas.Body>
-            <Nav classname="justify-content-end flex-grow-1 pe-2">
+            <Nav className="justify-content-end flex-grow-1 pe-2">
               <Nav.Link href="">Home</Nav.Link>
               <Nav.Link href="">Browse</Nav.Link>
               {!userIsAuthenticated() ?

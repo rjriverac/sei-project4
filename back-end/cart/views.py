@@ -71,4 +71,10 @@ class CartDetailView(APIView):
             except:
                 return Response({'message': 'items not removed'},status=status.HTTP_409_CONFLICT)
 
-
+    def delete(self,request):
+        try:
+            cart = Cart.objects.get(user=request.user.id)
+        except Cart.DoesNotExist:
+            raise NotFound()
+        cart.order_items.clear()
+        return Response({'message':'all gone'},status=status.HTTP_204_NO_CONTENT)
