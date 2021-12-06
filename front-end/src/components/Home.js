@@ -1,13 +1,13 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react'
 import banner from '../assets/produce-top.png'
-import { Button, Image, Container, Stack, Card, Placeholder } from 'react-bootstrap'
+import { Button, Image, Container, Stack, Card, Placeholder, Col, Row, ListGroup, ListGroupItem } from 'react-bootstrap'
 import axios from 'axios'
 
 const Home = () => {
 
   const [products, setProdcuts] = useState(null)
-  const [randIndex, setrandIndex] = useState(3)
+  const [randIndex, setrandIndex] = useState(0)
   const [isHovered, setHover] = useState(false)
   let myInterval
 
@@ -41,7 +41,7 @@ const Home = () => {
 
   return (
     <>
-      <Stack gap={5}>
+      <Stack gap={5} id="main-page-container">
         <Container
           fluid
           onMouseOver={() => setHover(true)}
@@ -61,7 +61,7 @@ const Home = () => {
                 style={{
                   position: 'absolute',
                   left: '50%',
-                  top: '50%'
+                  top: '70%'
                 }}
                 id="main-sign-up-button"
               >
@@ -70,25 +70,57 @@ const Home = () => {
             )
           }
         </Container>
-        <Stack
-          direction='horizontal'
-        >
-          <Card
-            style={{ width: '12rem' }}
-            border
-            ms-auto
-          >
-            {products ? 
-              <Card.Img 
-                variant="bottom"
-                src={products[randIndex].small_image}
-              />
-              :
-              <Placeholder as={Card.Img} width='120' height= '120'/>
-            }
+        <Container as={Row}>
+          <Col>
+            <div style={{ width: '150px',height: '150px' }}>
+            </div>
+          </Col>
+          <Col>
+            <Card
+              style={{ width: '12rem' }}
+              border
 
-          </Card>
-        </Stack>
+            >
+              {products ? <Card.Title>{products[randIndex].name}</Card.Title> : <Placeholder as={Card.Title}/>}
+              {products ? 
+                <Card.Img 
+                  variant='top'
+                  src={products[randIndex].small_image}
+                />
+                :
+                <Placeholder as={Card.Img} width='120' height= '120'/>
+              }
+            </Card>
+          </Col>
+          <Col>
+            <Card
+              style={{ width: '12rem' }}
+              border
+            >
+              <>
+                <Card.Title>Reviews</Card.Title>
+                {products ?
+                  products[randIndex].review_set.length ? (
+                    <ListGroup variant='flushed'>
+                      {products[randIndex].review_set.map((review,index)=>{
+                        return (
+                          <ListGroupItem key={index}>{`${review.text}-${review.rating}/5`}</ListGroupItem>
+                        )
+                      })}
+                    </ListGroup>
+                  )
+                    :
+                    <Card.Text>Be the first to leave a review!</Card.Text>
+                  :
+                  <Card.Text>Be the first to leave a review!</Card.Text>
+                }
+              </>
+            </Card>
+          </Col>
+          <Col>
+          </Col>
+        </Container>
+        
       </Stack>
 
     </>
