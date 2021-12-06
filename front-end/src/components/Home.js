@@ -75,15 +75,16 @@ const Home = () => {
         >
           <Card
             style={{ width: '12rem' }}
+            border
+            ms-auto
           >
             {products ? 
               <Card.Img 
                 variant="bottom"
                 src={products[randIndex].small_image}
-            
               />
               :
-              <Placeholder as={Card.Img} />
+              <Placeholder as={Card.Img} width='120' height= '120'/>
             }
 
           </Card>

@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAdminUser,IsAuthenticatedOrReadOnly
 
 from .models import Product
-from .serializers import ProductSerializer
+from .serializers import PopulatedProductSerializer, ProductSerializer
 
 
 
@@ -31,7 +31,7 @@ class ProductDetailView(APIView):
         try:
             self.permission_classes = (IsAuthenticatedOrReadOnly,)
             product = Product.objects.get(id=pk)
-            serialized_prod = ProductSerializer(product)
+            serialized_prod = PopulatedProductSerializer(product)
             return Response(serialized_prod.data, status = status.HTTP_202_ACCEPTED)
         except:
             return Response(status.HTTP_404_NOT_FOUND)
