@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react'
 import banner from '../assets/produce-top.png'
-import { Button, Image, Container, Stack, Card, Placeholder, Col, Row, ListGroup, ListGroupItem } from 'react-bootstrap'
+import { Button, Image, Container, Stack, Card, Placeholder, Col, Nav, ListGroup, ListGroupItem } from 'react-bootstrap'
 import axios from 'axios'
 
 const Home = () => {
@@ -70,16 +70,16 @@ const Home = () => {
             )
           }
         </Container>
-        <Container as={Row}>
-          <Col>
+        <Container as={Nav} className="justify-content-around" >
+          {/* <Col>
             <div style={{ width: '150px',height: '150px' }}>
             </div>
-          </Col>
-          <Col>
+          </Col> */}
+          <Col xs={6} md={3}>
             <Card
-              style={{ width: '12rem' }}
+              style={{ width: '10rem' }}
               border
-
+              xs={5}
             >
               {products ? <Card.Title>{products[randIndex].name}</Card.Title> : <Placeholder as={Card.Title}/>}
               {products ? 
@@ -92,10 +92,13 @@ const Home = () => {
               }
             </Card>
           </Col>
-          <Col>
+          {/* <Col>
+          </Col> */}
+          <Col xs={6} md={3}>
             <Card
-              style={{ width: '12rem' }}
+              style={{ width: '10rem' }}
               border
+              xs={5}
             >
               <>
                 <Card.Title>Reviews</Card.Title>
@@ -117,8 +120,7 @@ const Home = () => {
               </>
             </Card>
           </Col>
-          <Col>
-          </Col>
+          
         </Container>
         
       </Stack>
