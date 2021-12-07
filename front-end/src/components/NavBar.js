@@ -41,12 +41,12 @@ const NavBar = () => {
           </Offcanvas.Header>
           <Offcanvas.Body>
             <Nav className="justify-content-end flex-grow-1 pe-2">
-              <Nav.Link href="">Home</Nav.Link>
+              <Nav.Link href="/">Home</Nav.Link>
               <Nav.Link href="">Browse</Nav.Link>
               {!userIsAuthenticated() ?
                 <>
-                  <Nav.Link href="">Register</Nav.Link>
-                  <Nav.Link href="">Login</Nav.Link>
+                  <Nav.Link href="/register">Register</Nav.Link>
+                  <Nav.Link href="/login">Login</Nav.Link>
                 </>
                 :
                 <>

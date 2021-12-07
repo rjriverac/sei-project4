@@ -32,7 +32,7 @@ const Home = () => {
   //       setrandIndex(index)
   //       console.log(index)
   //     }
-  //   },500)
+  //   },5000)
 
   //   return () => clearInterval(myInterval)
   // },[products])
