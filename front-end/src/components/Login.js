@@ -1,8 +1,11 @@
 import React,{ useState } from 'react'
 import axios from 'axios'
 import { Button, Col, Container, Form, Toast } from 'react-bootstrap'
+import { useHistory } from 'react-router-dom'
 
 const Login = () => {
+
+  const history = useHistory()
 
   const [formData, setFormData] = useState({
     username: '',
@@ -30,9 +33,10 @@ const Login = () => {
       console.log(data)
       setToken(data.token)
       setdisplayMessage(true)
-      // setTimeout(() => {
-      //   history.push('/browse')
-      // }, 2500)
+      toggleShowToast()
+      setTimeout(() => {
+        history.push('/browse')
+      }, 2500)
     } catch (error) {
       console.log(error.response.data)
       setErrors(error.response.data)
@@ -49,6 +53,7 @@ const Login = () => {
   const toggleShowToast = () => setShowToast(!showToast)
 
   console.log(formData)
+  console.log(displayMessage)
   return (
     <Container>
       <Col md={{ span: 6, offset: 3 }}>

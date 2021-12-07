@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { Carousel, Container, Image, Row, Button, Stack } from 'react-bootstrap'
+import { Carousel, Container, Image, Row, Button, Stack, Badge } from 'react-bootstrap'
 
 const Showcase = () => {
 
@@ -21,9 +21,8 @@ const Showcase = () => {
     }
     getProds()
   }, [])
-  console.log(products)
-  return (
 
+  return (
 
     <Container className='vh-50'>
       <Row>
@@ -43,8 +42,16 @@ const Showcase = () => {
                   
                 /> */}
                 <Carousel.Caption>
-                  <h3>{item.name}</h3>
-                  <p>{`Price: ${item.price}`}</p>
+                  <Button 
+                    href={`/products/${item.id}`} 
+                    variant='success'
+                    size='lg'
+                  >
+                    {item.name}
+                  </Button>
+                  <br/>
+                  {/* <p>{`Price: ${item.price}`}</p> */}
+                  <Badge pill bg='success'>{`Price: ${item.price}`}</Badge>
                 </Carousel.Caption>
               </Carousel.Item>
             ))}
@@ -71,7 +78,6 @@ const Showcase = () => {
       <Row>
         <Button variant='info' href='/home'>Go Back Home</Button>
       </Row>
-
     </Container>
   )
 }
