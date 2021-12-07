@@ -63,7 +63,6 @@ const Login = () => {
           </Form.Group>
           <br />
           <Button variant='info' type='submit'>Log Me In!</Button>
-          {/* {submissionErrors() && <Alert variant='warning'>There was a problem logging you in</Alert>} */}
           <br/>
           <>
             {submissionErrors() && (

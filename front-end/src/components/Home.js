@@ -71,10 +71,6 @@ const Home = () => {
           }
         </Container>
         <Container as={Nav} className="justify-content-around" >
-          {/* <Col>
-            <div style={{ width: '150px',height: '150px' }}>
-            </div>
-          </Col> */}
           <Col xs={6} md={3}>
             <Card
               style={{ width: '10rem' }}
@@ -92,8 +88,6 @@ const Home = () => {
               }
             </Card>
           </Col>
-          {/* <Col>
-          </Col> */}
           <Col xs={6} md={3}>
             <Card
               style={{ width: '10rem' }}
@@ -120,7 +114,6 @@ const Home = () => {
               </>
             </Card>
           </Col>
-          
         </Container>
         
       </Stack>
