@@ -72,7 +72,18 @@ const Cart = () => {
           </Accordion>
         </Col>
         <Col xs={6} md={4}>
-          <Placeholder className='w-75'/>
+          <Alert variant='success'>
+            <Alert.Heading>Your Total:</Alert.Heading>
+            {(()=> Object.keys(cart).length !== 0)() && (
+              cart.items.map((item,index)=> {
+                return (
+                  <p key={index}>{item.name} ${item.price}</p>
+                )
+              })
+            )}
+            <hr/>
+            <h3>{`$${cart.total}`}</h3>
+          </Alert>
         </Col>
 
       </Row>
