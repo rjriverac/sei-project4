@@ -67,8 +67,11 @@ class CartDetailView(APIView):
                 transformed_items = list(map(lambda item: Product.objects.get(id=item),items_to_remove))
                 new_cart=[x for x in current_cart if x not in transformed_items]
                 cart.order_items.set(new_cart)
-                return Response(PopulatedCartSerializer(cart).data, status = status.HTTP_200_OK)
-            except:
+                serialized = PopulatedCartSerializer(cart)
+                cart_with_total = {**serialized.data,'total':cart.get_total()}
+                return Response(cart_with_total, status = status.HTTP_200_OK)
+            except Exception as e:
+                print(e)
                 return Response({'message': 'items not removed'},status=status.HTTP_409_CONFLICT)
 
     def delete(self,request):

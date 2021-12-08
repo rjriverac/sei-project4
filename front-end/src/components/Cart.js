@@ -27,6 +27,25 @@ const Cart = () => {
     getCart()
   }, [token])
 
+
+  const removeFromCart = async (item) => {
+    try {
+      const { data: { order_items: cartItems, total } } = await axios.put('/api/cart/view/',
+        {
+          operation: 'remove',
+          order_items: [`${item}`]
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      )
+      setCart({ items: [...cartItems], total: total })
+    } catch (error) {
+      console.log(error)
+      setHasError(true)
+    }
+  }
+
   console.log(cart)
 
   return (
@@ -63,12 +82,13 @@ const Cart = () => {
                         <Accordion.Body>
                           <Row>
                             <Col md={3}>
-                              <Alert variant='success'>{`$${item.price}`}</Alert>
+                              <Alert variant='primary'>{`$${item.price}`}</Alert>
                             </Col>
                             <Col md={{ span: 3, offset: 3 }}>
                               <Button
                                 variant='danger'
                                 size='sm'
+                                onClick={() => removeFromCart(item.id)}
                               >
                                 Remove from Cart
                               </Button>
