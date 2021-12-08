@@ -46,6 +46,20 @@ const Cart = () => {
     }
   }
 
+  const clearCart = async () => {
+    try {
+      const { data: { order_items: cartItems, total } } = await axios.delete('/api/cart/view',
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      )
+      setCart({ items: [...cartItems], total: total })
+    } catch (error) {
+      console.log(error)
+      setHasError(true)
+    }
+  }
+
   console.log(cart)
 
   return (
@@ -61,7 +75,7 @@ const Cart = () => {
                       Your Cart
                     </Col>
                     <Col>
-                      <Button variant='danger'>Empty Cart</Button>
+                      <Button variant='danger' onClick={clearCart}>Empty Cart</Button>
                     </Col>
                   </Row>
                 </Container>
