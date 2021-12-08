@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import Cart
-from products.serializers import ProductSerializer
+from products.serializers import PopulatedProductSerializer
 
 class CartSerializer(serializers.ModelSerializer):
     class Meta:
@@ -8,5 +8,5 @@ class CartSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class PopulatedCartSerializer(CartSerializer):
-    order_items = ProductSerializer(many=True,read_only=True)
+    order_items = PopulatedProductSerializer(many=True,read_only=True)
 

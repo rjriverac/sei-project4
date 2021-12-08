@@ -42,7 +42,7 @@ const NavBar = () => {
           <Offcanvas.Body>
             <Nav className="justify-content-end flex-grow-1 pe-2">
               <Nav.Link href="/">Home</Nav.Link>
-              <Nav.Link href="">Browse</Nav.Link>
+              <Nav.Link href="/browse">Browse</Nav.Link>
               {!userIsAuthenticated() ?
                 <>
                   <Nav.Link href="/register">Register</Nav.Link>
@@ -51,7 +51,7 @@ const NavBar = () => {
                 :
                 <>
                   <NavDropdown title="Your Account" id="offcanvasNavbarDropdown">
-                    <NavDropdown.Item href="">View your cart</NavDropdown.Item>
+                    <NavDropdown.Item href="/cart">View your cart</NavDropdown.Item>
                     <NavDropdown.Divider />
                     <NavDropdown.Item
                       as={'a'}
