@@ -2,11 +2,14 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useParams, useHistory } from 'react-router-dom'
-import { getTokenFromLocalStorage, userIsAuthenticated, userIsOwner } from './helpers/auth'
+import { getTokenFromLocalStorage, userIsAuthenticated } from './helpers/auth'
+import { Container, Image, Placeholder, Row, Button, Col, Nav } from 'react-bootstrap'
+
 
 const ProductDetail = () => {
   const { id } = useParams()
   const [item, setItem] = useState({})
+  const history = useHistory()
   const [errors, setErrors] = useState(false)
   const [inCart, setInCart] = useState({})
   const [added, setAdded] = useState(false)
@@ -49,13 +52,57 @@ const ProductDetail = () => {
         } else setAdded(false)
       }
     }
-    // setAdded(inCart.cart.map(item=>item.id).filter(cartId => cartId === id).length)
-    // setAdded(Object.values(inCart).every(x=>!!x))
   }, [inCart])
-  console.log(inCart.cart.map(item=>item.id))
-  console.log('added', added)
+
+  const handleClick = async () => {
+    console.log('click')
+    if (!userIsAuthenticated()) history.push('/login')
+    if (!added) {
+      try {
+        await axios.put('/api/cart/view/',
+          {
+            operation: 'add',
+            order_items: [`${id}`]
+          },
+          {
+            headers: { Authorization: `Bearer ${getTokenFromLocalStorage()}` }
+          }
+        )
+        setAdded(true)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  }
+
+  console.log(item)
   return (
-    <h1>hello world</h1>
+
+    <Container fluid style={{ position: 'relative' }}>
+      <Row >
+        <Col>
+          {!isEmpty(item) ?
+            <Image fluid src={item.big_image} />
+            :
+            <Placeholder as={Image} className='img-fluid' />
+          }
+
+        </Col>
+      </Row>
+      <Container
+        style={{ position: 'absolute', left: '60%', top: '70%' }}
+        className='mw-30'
+      >
+        <Button
+          variant={!added ? 'success' : 'danger'}
+          onClick={handleClick}
+          disabled={!added ? false : true}
+        >
+          {!added ? 'Add to Cart' : 'Already in Cart!'}
+        </Button>
+      </Container>
+
+    </Container>
   )
 }
 
