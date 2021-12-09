@@ -1,9 +1,13 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useParams, useHistory } from 'react-router-dom'
 import { getTokenFromLocalStorage, userIsAuthenticated } from './helpers/auth'
-import { Container, Image, Placeholder, Row, Button, Col, Nav, Card, Alert, Form, FloatingLabel, OverlayTrigger, Tooltip } from 'react-bootstrap'
+import {
+  Container, Placeholder, Row, Button,
+  Col, Card, Alert, Form, FloatingLabel, OverlayTrigger,
+  Tooltip, ListGroup, ProgressBar
+} from 'react-bootstrap'
 
 
 const ProductDetail = () => {
@@ -20,7 +24,7 @@ const ProductDetail = () => {
     text: '',
     product: id
   })
-  const [reviewed,setReviewed] = useState(false)
+  const [reviewed, setReviewed] = useState(false)
 
   const handleRating = (event) => {
     const newData = { ...rating, [event.target.id]: event.target.value }
@@ -30,7 +34,7 @@ const ProductDetail = () => {
   const handleReview = async (e) => {
     e.preventDefault()
     try {
-      const { data } = await axios.post('/api/review/',rating,
+      const { data } = await axios.post('/api/review/', rating,
         { headers: { Authorization: `Bearer ${getTokenFromLocalStorage()}` } }
       )
       setReviewed(true)
@@ -67,7 +71,7 @@ const ProductDetail = () => {
     }
     getProduct()
     getCart()
-  }, [id])
+  }, [id,reviewed])
 
   useEffect(() => {
     if (Object.values(inCart).every(x => !!x)) {
@@ -100,7 +104,7 @@ const ProductDetail = () => {
     }
   }
 
-  console.log(rating)
+
   return (
 
     <Container>
@@ -145,55 +149,82 @@ const ProductDetail = () => {
       </Row>
       <hr />
       <Row className='justify-content-around'>
-        {userIsAuthenticated() &&
-          <>
-            <Col xs={12} md={6}>
-              {/* <Placeholder animation='glow' as={Card}>
-                <Placeholder xs={12} />
-                <Placeholder xs={12} />
-                <Placeholder xs={12} />
-                <Placeholder xs={12} />
-              </Placeholder> */}
-              <Form
-                onSubmit={handleReview}
+        <Col xs={12} md={6}>
+          <Form
+            onSubmit={!userIsAuthenticated() ? () => history.push('/login') : handleReview}
+          >
+            <Form.Group controlId='rating' onChange={handleRating}>
+              <Form.Label>Please Rate</Form.Label>
+              <OverlayTrigger
+                placement='left'
+                overlay={
+                  <Tooltip>
+                    {range}
+                  </Tooltip>
+                }
               >
-                <Form.Group controlId='rating' onChange={handleRating}>
-                  <Form.Label>Please Rate</Form.Label>
-                  <OverlayTrigger
-                    placement='left'
-                    overlay={
-                      <Tooltip>
-                        {range}
-                      </Tooltip>
-                    }
-                  >
-                    <Form.Range
-                      value={range}
-                      onChange={e => setRange(e.target.value)}
-                      min='1'
-                      max='5'
-                      step='1'
-                    />
-                  </OverlayTrigger>
-                </Form.Group>
-                <Form.Group onChange={handleRating}>
-                  <FloatingLabel
-                    label='Let us know what you think!'
-                    controlId='text'
-                  >
-                    <Form.Control as='textarea' rows={2} placeholder='enter your review'/>
-                  </FloatingLabel>
-                </Form.Group>
-                <br/>
-                <Button
-                  variant='info'
-                  type='submit'
-                >
-                  Submit Review
-                </Button>
-              </Form>
-            </Col>
-            <Col xs={12} md={4}>
+                <Form.Range
+                  value={range}
+                  onChange={e => setRange(e.target.value)}
+                  min='1'
+                  max='5'
+                  step='1'
+                />
+              </OverlayTrigger>
+            </Form.Group>
+            <Form.Group onChange={handleRating}>
+              <FloatingLabel
+                label='Let us know what you think!'
+                controlId='text'
+              >
+                <Form.Control as='textarea' rows={2} placeholder='enter your review' />
+              </FloatingLabel>
+            </Form.Group>
+            <br />
+            <Button
+              variant='info'
+              type='submit'
+            >
+              Submit Review
+            </Button>
+          </Form>
+        </Col>
+        <Col xs={12} md={4}>
+          {
+            (() => {
+              if (isEmpty(item) || errors) return false
+              else return true
+            })() ?
+              <ListGroup>
+                {item.review_set.length ?
+                  (item.review_set.map((review, index) => (
+                    <ListGroup.Item key={index}>
+                      <ProgressBar
+                        min={1}
+                        max={5}
+                        animated
+                        variant='success'
+                        now={review.rating}
+                        label={review.rating}
+                      />
+                      {review.text}
+                    </ListGroup.Item>
+                  )))
+                  :
+
+                  <><br /><ListGroup.Item>
+                    <ProgressBar
+                      min={1}
+                      max={5}
+                      animated
+                      now={3}
+                      variant='secondary' />
+                    Be the first to leave a review!
+                  </ListGroup.Item></>
+
+                }
+              </ListGroup>
+              :
               <Placeholder animation='glow' as={Card}>
                 <Placeholder xs={12} />
                 <Placeholder xs={12} />
@@ -201,9 +232,8 @@ const ProductDetail = () => {
                 <Placeholder xs={12} />
                 <Placeholder xs={12} />
               </Placeholder>
-            </Col>
-          </>
-        }
+          }
+        </Col>
       </Row>
     </Container>
   )
