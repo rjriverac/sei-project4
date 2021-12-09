@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useParams, useHistory } from 'react-router-dom'
 import { getTokenFromLocalStorage, userIsAuthenticated } from './helpers/auth'
-import { Container, Image, Placeholder, Row, Button, Col, Nav } from 'react-bootstrap'
+import { Container, Image, Placeholder, Row, Button, Col, Nav, Card, Alert } from 'react-bootstrap'
 
 
 const ProductDetail = () => {
@@ -78,30 +78,43 @@ const ProductDetail = () => {
   console.log(item)
   return (
 
-    <Container fluid style={{ position: 'relative' }}>
-      <Row >
-        <Col>
-          {!isEmpty(item) ?
-            <Image fluid src={item.big_image} />
-            :
-            <Placeholder as={Image} className='img-fluid' />
-          }
-
-        </Col>
-      </Row>
-      <Container
-        style={{ position: 'absolute', left: '60%', top: '70%' }}
-        className='mw-30'
-      >
-        <Button
-          variant={!added ? 'success' : 'danger'}
-          onClick={handleClick}
-          disabled={!added ? false : true}
-        >
-          {!added ? 'Add to Cart' : 'Already in Cart!'}
-        </Button>
-      </Container>
-
+    <Container>
+      <Card>
+        {!isEmpty(item) ?
+          <Card.Img src={item.big_image} alt={`photo of ${item.name}`} />
+          :
+          <Placeholder as={Card.Img} />
+        }
+        <Card.Img />
+        <Card.ImgOverlay className='d-flex justify-content-end align-items-end'>
+          <div className='d-flex flex-column-reverse'>
+            <Button
+              className=''
+              variant={!added ? 'success' : 'danger'}
+              onClick={handleClick}
+              disabled={!added ? false : true}
+            >
+              {!added ? 'Add to Cart' : 'Already in Cart!'}
+            </Button>
+            <>
+              {!isEmpty(item) ? 
+                <Alert variant='success'>
+                  <Alert.Heading>{item.name}</Alert.Heading>
+                  <hr />
+                  <p>{`$${item.price}`}</p>
+                </Alert>
+                :
+                <Alert variant='secondary'>
+                  <Alert.Heading>Product Loading</Alert.Heading>
+                  <hr />
+                  <p>Product Loading</p>
+                </Alert>
+              }
+            </>
+            
+          </div>
+        </Card.ImgOverlay>
+      </Card>
     </Container>
   )
 }

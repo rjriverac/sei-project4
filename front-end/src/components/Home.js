@@ -58,6 +58,8 @@ const Home = () => {
             isHovered && (
               <Button
                 size="lg"
+                href
+                variant='success'
                 style={{
                   position: 'absolute',
                   left: '50%',

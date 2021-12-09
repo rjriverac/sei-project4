@@ -129,3 +129,7 @@
   display: flex;
   align-items: center;
 }
+
+#thenavbar {
+  background-color: #e2e2e2;
+}

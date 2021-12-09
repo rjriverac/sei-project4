@@ -17,7 +17,7 @@ const NavBar = () => {
   }
 
   return (
-    <Navbar bg="light" variant="light" expand={false}>
+    <Navbar bg="success" variant="light" expand={false} id='thenavbar'>
       <Container fluid>
         <Navbar.Brand>
           <img
