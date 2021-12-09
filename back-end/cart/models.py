@@ -14,5 +14,8 @@ class Cart(models.Model):
         total = 0
         for each_item in self.order_items.all():
             total += each_item.price
-            result = '{:.2f}'.format(total)
-        return result
+        return '{:.2f}'.format(total)
+
+    def clear_cart(self):
+        self.order_items.clear()
+        return self

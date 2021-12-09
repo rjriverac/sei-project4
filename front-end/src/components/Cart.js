@@ -3,12 +3,31 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { getTokenFromLocalStorage } from './helpers/auth'
 import { Accordion, Col, Container, Image, Placeholder, Row, Button, Badge, Alert } from 'react-bootstrap'
+import { loadStripe } from '@stripe/stripe-js'
+import { Elements } from '@stripe/react-stripe-js'
+import CheckoutForm from './CheckoutForm'
 
 const Cart = () => {
+  const apiKey = process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY
+  const stripePromise = loadStripe(apiKey)
+  const [clientSecret, setClientSecret] = useState('')
+
+  const appearance = {
+    theme: 'flat',
+    variables: {
+      colorPrimary: '#009257',
+      colorBackground: '#cbeade'
+    }
+  }
+  const options = {
+    clientSecret,
+    appearance
+  }
 
   const token = getTokenFromLocalStorage()
   const [cart, setCart] = useState({})
   const [hasError, setHasError] = useState(false)
+  const [isCheckingOut, setCheckout] = useState(false)
 
   useEffect(() => {
     const getCart = async () => {
@@ -26,6 +45,24 @@ const Cart = () => {
     }
     getCart()
   }, [token])
+
+  useEffect(() => {
+    const payIntent = async () => {
+      if (Object.keys(cart).length !== 0) {
+        try {
+          const { data } = await axios.post(
+            '/api/payments/create-payment-intent/',
+            cart.items,
+            { headers: { Authorization: `Bearer ${token}` } }
+          )
+          setClientSecret(data.clientsecret)
+        } catch (error) {
+          console.log(error)
+        }
+      }
+    }
+    payIntent()
+  }, [cart])
 
 
   const removeFromCart = async (item) => {
@@ -60,7 +97,7 @@ const Cart = () => {
     }
   }
 
-  console.log(cart)
+
 
   return (
     <Container>
@@ -121,7 +158,7 @@ const Cart = () => {
         <Col xs={6} md={4}>
           <Alert variant='success'>
             <Alert.Heading>Your Total:</Alert.Heading>
-            {(() => Object.keys(cart).length !== 0)() && (
+            {(() => Object.keys(cart).length !== 0 && Object.values(cart).every(val => !!val))() && (
               cart.items.map((item, index) => {
                 return (
                   <p key={index}>{item.name} ${item.price}</p>
@@ -131,17 +168,27 @@ const Cart = () => {
             <hr />
             <Row>
               <Col>
-                <h3>{`$${cart.total}`}</h3>
+                <h3>{Object.values(cart).every(val => !!val) ? `$${cart.total}` : '$0.00'}</h3>
               </Col>
               <Col>
-                <Button variant='success'>Check Out</Button>
+                <Button variant='success' onClick={() => setCheckout(!isCheckingOut)}>Check Out</Button>
               </Col>
             </Row>
           </Alert>
+
         </Col>
-
       </Row>
-
+      {isCheckingOut &&
+        (<Container id='money'>
+          <div className="App" id="stripe-checkout">
+            {clientSecret && (
+              <Elements options={options} stripe={stripePromise}>
+                <CheckoutForm />
+              </Elements>
+            )}
+          </div>
+        </Container>)
+      }
     </Container>
   )
 }

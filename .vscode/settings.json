@@ -1,3 +1,4 @@
 {
-  "python.pythonPath": "/Users/rrivera/.local/share/virtualenvs/django-_Mcvi3FP/bin/python"
+  // "python.pythonPath": "/Users/rrivera/.local/share/virtualenvs/django-_Mcvi3FP/bin/python"
+  "python.pythonPath": "/Users/rrivera/development/project4/sei-project4/back-end/.venv/bin/python"
 }
