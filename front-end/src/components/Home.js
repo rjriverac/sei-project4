@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import banner from '../assets/produce-top.png'
 import { Button, Image, Container, Stack, Card, Placeholder, Col, Nav, ListGroup, ListGroupItem } from 'react-bootstrap'
 import axios from 'axios'
+import { userIsAuthenticated } from './helpers/auth'
 
 const Home = () => {
 
@@ -25,17 +26,16 @@ const Home = () => {
   }, [])
 
   // todo random index selector, to render card on front page
-  // useEffect(()=> {
-  //   myInterval = setInterval(()=>{
-  //     if (products){
-  //       const index = Math.floor(Math.random() * products.length)
-  //       setrandIndex(index)
-  //       console.log(index)
-  //     }
-  //   },5000)
+  useEffect(()=> {
+    myInterval = setInterval(()=>{
+      if (products){
+        const index = Math.floor(Math.random() * products.length)
+        setrandIndex(index)
+      }
+    },5000)
 
-  //   return () => clearInterval(myInterval)
-  // },[products])
+    return () => clearInterval(myInterval)
+  },[products])
 
   
 
@@ -58,7 +58,7 @@ const Home = () => {
             isHovered && (
               <Button
                 size="lg"
-                href
+                href={userIsAuthenticated() ? '/browse' : '/register'}
                 variant='success'
                 style={{
                   position: 'absolute',
@@ -67,20 +67,20 @@ const Home = () => {
                 }}
                 id="main-sign-up-button"
               >
-                Sign Up!
+                {userIsAuthenticated() ? 'Browse' : 'Sign Up!'}
               </Button>
             )
           }
         </Container>
         <Container as={Nav} className="justify-content-around" >
-          <Col xs={6} md={3}>
+          <Col xs={12} md={3}>
             <Card
               style={{ width: '14rem' }}
               border='success'
               xs={5}
             >
               <Card.Header>
-                {products ? <Card.Title>{products[randIndex].name}</Card.Title> : <Placeholder as={Card.Title}/>}
+                {products ? <Card.Title>{products[randIndex].name}</Card.Title> : <Placeholder as={Card.Title} animation='glow'><Placeholder xs={12}/></Placeholder>}
               </Card.Header>
               {products ? 
                 <Card.Body as={'a'} href={`products/${products[randIndex].id}`}>
@@ -96,7 +96,7 @@ const Home = () => {
               }
             </Card>
           </Col>
-          <Col xs={6} md={3}>
+          <Col xs={12} md={3}>
             <Card
               style={{ width: '14rem' }}
               border='success'
