@@ -5,6 +5,7 @@ import Cart from './components/Cart'
 import Home from './components/Home'
 import Login from './components/Login'
 import NavBar from './components/NavBar'
+import PaySuccess from './components/PaySuccess'
 import ProductDetail from './components/ProductDetail'
 import Register from './components/Register'
 import Showcase from './components/Showcase'
@@ -22,6 +23,7 @@ const App = () => {
           <Route exact path='/browse' component={Showcase} />
           <Route exact path='/products/:id' component={ProductDetail}/>
           <Route exact path='/cart' component={Cart}/>
+          <Route exact path='/clear' component={PaySuccess}/>
         </Switch>
       </Router>
     </>

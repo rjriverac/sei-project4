@@ -73,16 +73,22 @@ const Home = () => {
         <Container as={Nav} className="justify-content-around" >
           <Col xs={6} md={3}>
             <Card
-              style={{ width: '10rem' }}
-              border
+              style={{ width: '14rem' }}
+              border='success'
               xs={5}
             >
-              {products ? <Card.Title>{products[randIndex].name}</Card.Title> : <Placeholder as={Card.Title}/>}
+              <Card.Header>
+                {products ? <Card.Title>{products[randIndex].name}</Card.Title> : <Placeholder as={Card.Title}/>}
+              </Card.Header>
               {products ? 
-                <Card.Img 
-                  variant='top'
-                  src={products[randIndex].small_image}
-                />
+                <Card.Body as={'a'} href={`products/${products[randIndex].id}`}>
+                  <Card.Img
+                    
+                    variant='top'
+                    src={products[randIndex].small_image}
+                  />
+
+                </Card.Body>
                 :
                 <Placeholder as={Card.Img} width='120' height= '120'/>
               }
@@ -90,27 +96,31 @@ const Home = () => {
           </Col>
           <Col xs={6} md={3}>
             <Card
-              style={{ width: '10rem' }}
-              border
+              style={{ width: '14rem' }}
+              border='success'
               xs={5}
             >
               <>
-                <Card.Title>Reviews</Card.Title>
-                {products ?
-                  products[randIndex].review_set.length ? (
-                    <ListGroup variant='flushed'>
-                      {products[randIndex].review_set.map((review,index)=>{
-                        return (
-                          <ListGroupItem key={index}>{`${review.text}-${review.rating}/5`}</ListGroupItem>
-                        )
-                      })}
-                    </ListGroup>
-                  )
+                <Card.Header>
+                  <Card.Title>Reviews</Card.Title>
+                </Card.Header>
+                <Card.Body>
+                  {products ?
+                    products[randIndex].review_set.length ? (
+                      <ListGroup variant='flushed'>
+                        {products[randIndex].review_set.map((review,index)=>{
+                          return (
+                            <ListGroupItem key={index}>{`${review.text}-${review.rating}/5`}</ListGroupItem>
+                          )
+                        })}
+                      </ListGroup>
+                    )
+                      :
+                      <Card.Text>Be the first to leave a review!</Card.Text>
                     :
                     <Card.Text>Be the first to leave a review!</Card.Text>
-                  :
-                  <Card.Text>Be the first to leave a review!</Card.Text>
-                }
+                  }
+                </Card.Body>
               </>
             </Card>
           </Col>
