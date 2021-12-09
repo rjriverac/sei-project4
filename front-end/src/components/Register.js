@@ -41,7 +41,7 @@ const Register = () => {
   useEffect(() => {
     if (displayMessage) {
       setTimeout(() => {
-        history.push('/')
+        history.push('/login')
       },750)
     }
   },[displayMessage])
