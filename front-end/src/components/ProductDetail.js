@@ -40,6 +40,8 @@ const ProductDetail = () => {
         { headers: { Authorization: `Bearer ${getTokenFromLocalStorage()}` } }
       )
       setReviewed(true)
+      setRating({ ...rating, rating: '', text: '' })
+      setRange(1)
     } catch (error) {
       console.log(error.response.data)
     }
@@ -194,7 +196,7 @@ const ProductDetail = () => {
                 label='Let us know what you think!'
                 controlId='text'
               >
-                <Form.Control as='textarea' rows={2} placeholder='enter your review' />
+                <Form.Control as='textarea' rows={2} placeholder='enter your review' value={rating.text}/>
               </FloatingLabel>
             </Form.Group>
             <br />
