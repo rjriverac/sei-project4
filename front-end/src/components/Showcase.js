@@ -76,7 +76,7 @@ const Showcase = () => {
       </Row>
       <br />
       <Row>
-        <Button variant='info' href='/home'>Go Back Home</Button>
+        <Button variant='info' href='/'>Go Back Home</Button>
       </Row>
     </Container>
   )

@@ -33,7 +33,7 @@ const PaySuccess = () => {
   },[cleared])
 
   return (
-    <Container className='min-vh-70'>
+    <Container className='min-vh-70 py-3'>
       <Alert variant='success' >
         <Alert.Heading className='text-center'>Payment Successful!</Alert.Heading>
         <hr />

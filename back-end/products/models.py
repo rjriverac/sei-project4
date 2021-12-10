@@ -15,8 +15,8 @@ class Product(models.Model):
         ('PR', 'Produce'),
     ]
     food_category = models.CharField(max_length=2,choices=category_choices)
-    big_image = models.CharField(max_length=150)
-    small_image = models.CharField(max_length=150)
+    big_image = models.CharField(max_length=200)
+    small_image = models.CharField(max_length=200)
 
     def __str__(self) -> str:
         return f'{self.name}'

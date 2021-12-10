@@ -6,11 +6,13 @@ import { getTokenFromLocalStorage, userIsAuthenticated } from './helpers/auth'
 import {
   Container, Placeholder, Row, Button,
   Col, Card, Alert, Form, FloatingLabel, OverlayTrigger,
-  Tooltip, ListGroup, ProgressBar
+  Tooltip, ListGroup, ProgressBar, Modal
 } from 'react-bootstrap'
 
 
 const ProductDetail = () => {
+
+  const [showModal, setShowModal] = useState(false)
   const { id } = useParams()
   const [item, setItem] = useState({})
   const history = useHistory()
@@ -98,6 +100,7 @@ const ProductDetail = () => {
           }
         )
         setAdded(true)
+        setShowModal(true)
       } catch (error) {
         console.log(error)
       }
@@ -145,6 +148,20 @@ const ProductDetail = () => {
               </div>
             </Card.ImgOverlay>
           </Card>
+
+          <Modal
+            show={showModal}
+            onClick={()=>setShowModal(false)}
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>Added!</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>Your cart has been updated!</Modal.Body>
+            <Modal.Footer>
+              <Button variant='secondary' onClick={()=>setShowModal(false)}>Close</Button>
+              <Button variant='success' onClick={() => setTimeout(()=>history.push('/cart'),1000)}>Go to Cart</Button>
+            </Modal.Footer>
+          </Modal>
         </Col>
       </Row>
       <hr />
@@ -235,6 +252,10 @@ const ProductDetail = () => {
           }
         </Col>
       </Row>
+      <br/>
+      <Container>
+        <Button variant='success' href='/browse'>Browse more products</Button>
+      </Container>
     </Container>
   )
 }

@@ -28,9 +28,9 @@ const Login = () => {
 
   const handleSubmit = async event => {
     event.preventDefault()
+    if (showToast) setShowToast(!showToast)
     try {
       const { data } = await axios.post('/api/auth/login/',formData)
-      console.log(data)
       setToken(data.token)
       setdisplayMessage(true)
       toggleShowToast()
@@ -52,8 +52,7 @@ const Login = () => {
 
   const toggleShowToast = () => setShowToast(!showToast)
 
-  console.log(formData)
-  console.log(displayMessage)
+
   return (
     <Container>
       <Col md={{ span: 6, offset: 3 }}>
