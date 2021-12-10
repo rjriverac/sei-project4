@@ -26,18 +26,18 @@ const Home = () => {
   }, [])
 
   // todo random index selector, to render card on front page
-  useEffect(()=> {
-    myInterval = setInterval(()=>{
-      if (products){
+  useEffect(() => {
+    myInterval = setInterval(() => {
+      if (products) {
         const index = Math.floor(Math.random() * products.length)
         setrandIndex(index)
       }
-    },5000)
+    }, 5000)
 
     return () => clearInterval(myInterval)
-  },[products])
+  }, [products])
 
-  
+
 
   return (
     <>
@@ -73,34 +73,47 @@ const Home = () => {
           }
         </Container>
         <Container as={Nav} className="justify-content-around" >
-          <Col xs={12} md={3}>
+          <Col xs={12} md={3} className='d-flex justify-content-center'>
+            <style type='text/css'>
+              {`
+                #maincard {
+                  height: 300px;
+                }
+                .maincardimage {
+                  // height:225px;
+                  // width: auto;
+                  object-fit:contain;
+                  
+                }
+
+                    `}
+            </style>
             <Card
               style={{ width: '14rem' }}
               border='success'
-              xs={5}
+              id='maincard'
             >
               <Card.Header>
-                {products ? <Card.Title>{products[randIndex].name}</Card.Title> : <Placeholder as={Card.Title} animation='glow'><Placeholder xs={12}/></Placeholder>}
+                {products ? <Card.Title>{products[randIndex].name}</Card.Title> : <Placeholder as={Card.Title} animation='glow'><Placeholder xs={12} /></Placeholder>}
               </Card.Header>
-              {products ? 
+              {products ?
                 <Card.Body as={'a'} href={`products/${products[randIndex].id}`}>
                   <Card.Img
-                    
+                    className='maincardimage'
                     variant='top'
                     src={products[randIndex].small_image}
                   />
-
                 </Card.Body>
                 :
-                <Placeholder as={Card.Img} width='120' height= '120'/>
+                <Placeholder as={Card.Img} width='120' height='120' />
               }
             </Card>
           </Col>
-          <Col xs={12} md={3}>
+          <Col xs={12} md={3} className='d-flex justify-content-center'>
             <Card
               style={{ width: '14rem' }}
               border='success'
-              xs={5}
+
             >
               <>
                 <Card.Header>
@@ -110,7 +123,7 @@ const Home = () => {
                   {products ?
                     products[randIndex].review_set.length ? (
                       <ListGroup variant='flushed'>
-                        {products[randIndex].review_set.map((review,index)=>{
+                        {products[randIndex].review_set.slice(0,3).map((review, index) => {
                           return (
                             <ListGroupItem key={index}>{`${review.text}-${review.rating}/5`}</ListGroupItem>
                           )
@@ -127,7 +140,7 @@ const Home = () => {
             </Card>
           </Col>
         </Container>
-        
+
       </Stack>
 
     </>
